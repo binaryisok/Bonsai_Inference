@@ -33,13 +33,18 @@ class BonsaiColabPipeline:
     def __init__(
         self,
         demo_dir: str = "/content/Bonsai-demo",
-        port: int = 8080,
+        port: int = 8088,
         context_size: int = 16384,
         gpu_layers: int = 99,
         kv_4bit: bool = False,
         host: str = "127.0.0.1",
         auto_setup: bool = True,
     ):
+        # On Google Colab, port 8080 is permanently bound by /datalab/web/app.js (Datalab service)
+        if port == 8080 and os.path.exists("/content"):
+            print("[WARN] Port 8080 is reserved by Google Colab's internal Datalab service. Switching to port 8088.")
+            port = 8088
+
         self.demo_dir = os.path.abspath(demo_dir)
         self.port = port
         self.host = host
@@ -385,7 +390,12 @@ def main():
         default="/content/Bonsai-demo",
         help="Path to Bonsai-demo directory",
     )
-    parser.add_argument("--port", type=int, default=8080, help="Port for llama-server")
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8088,
+        help="Port for llama-server (default: 8088, avoids Colab 8080 conflict)",
+    )
     parser.add_argument(
         "--ctx", type=int, default=16384, help="Context size (default: 16384)"
     )
