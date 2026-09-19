@@ -11,11 +11,51 @@ Dedicated, verified inference pipeline for running [PrismML's Ternary Bonsai 2 2
 | **GPU Architecture** | Turing (sm_75) | CUDA 12.x / 13.x with Tensor Cores | Supported |
 | **VRAM Footprint** | **15,360 MiB (16 GB)** | **8,508 MiB (~8.5 GB)** with vision mmproj | **100% GPU Offload (`-ngl 99`)** |
 | **KV Cache Headroom** | **~6.8 GB remaining** | ~512 MB for 8k ctx, ~2 GB for 32k ctx | Full 16k–32k context fits in VRAM |
-| **Decode Speed** | ~9–12 tokens/sec | Low-bit ternary kernel | Interactive & streaming |
+| **Decode Speed** | ~9.3 tokens/sec | Low-bit ternary kernel | Interactive & streaming |
+
+---
+
+## Live Benchmarks on Tesla T4 (Google Colab)
+
+Tested and measured directly on an active Google Colab GPU instance via Colab Studio API:
+
+| Metric | Measured Value | Details / Notes |
+| :--- | :--- | :--- |
+| **GPU Model** | **Tesla T4 (15,360 MiB VRAM)** | 16 GB GDDR6, Turing sm_75 architecture |
+| **VRAM Allocation** | **8,508 MiB (~8.5 GB)** | **100% of all 99 layers offloaded to GPU** |
+| **Available VRAM Headroom** | **~6,852 MiB (~6.8 GB)** | Headroom reserved for KV cache / long context |
+| **Decode Throughput (TPS)** | **9.3 tokens / sec** | Interactive token generation speed on Tesla T4 |
+| **Time to First Token (TTFT)** | **24.40 seconds** | Initial prompt processing & KV cache allocation |
+| **Total Streamed Tokens** | **203 tokens** | Thinking/Reasoning: ~140 tokens, Final Answer: ~63 tokens |
+| **Total Response Latency** | **46.21 seconds** | Full request-to-completion time |
+| **End-to-End Throughput** | **4.4 tokens / sec** | Aggregate speed factoring in the initial prefill/TTFT |
+
+### Sample Generation Stream
+
+```text
+[Thinking] 
+We need answer user's simple question: "What are the three values in ternary neural networks?" 
+Need final answer. Ternary neural networks use three-valued states, commonly -1, 0, +1 
+(or low, mid, high). Could mention alternatives like {-1,0,1} or {0,1,2}. Need concise.
+
+[Answer] 
+The three values in ternary neural networks are typically:
+
+-1, 0, +1
+
+These represent the low, medium, and high states of a ternary neuron.
+```
 
 ---
 
 ## Quickstart on Google Colab
+
+### Step 0: Recommended Colab RAM Safeguard
+Google Colab's free tier has 12.7 GB of System RAM. To avoid OOM disconnections while streaming model weights to VRAM, add swap in your first cell:
+
+```bash
+!fallocate -l 8G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile || true
+```
 
 ### Option 1: One-Command CLI Execution
 In a Colab notebook cell (make sure runtime is set to **T4 GPU**):
@@ -24,7 +64,7 @@ In a Colab notebook cell (make sure runtime is set to **T4 GPU**):
 # Upload or download inference.py, then run:
 !python inference.py --prompt "Explain ternary neural networks in 2 sentences."
 ```
-*Note: `inference.py` self-bootstraps: it automatically clones the `Bonsai-demo` repository, downloads the CUDA binaries and model weights, starts `llama-server`, and streams the output.*
+*Note: `inference.py` self-bootstraps: it automatically clones the `Bonsai-demo` repository, downloads the CUDA binaries and model weights, starts `llama-server` on port 8088, and streams the output.*
 
 ### Option 2: Python Script / Module
 ```python
@@ -47,11 +87,17 @@ answer_vision = pipeline.ask_image(
 pipeline.stop_server()
 ```
 
+### Option 3: Run the Automated Benchmark Suite
+```bash
+!python benchmark.py
+```
+This runs 4 benchmark test cases (Short Fact Retrieval, Reasoning & Math, Code Generation, and Summarization) and generates a structured latency/TPS summary table and `benchmark_results.json`.
+
 ---
 
 ## Issues Encountered, Root Causes & Fixes
 
-### 1. Jupyter Kernel `-f` Argument Error
+### 1. Jupyter Kernel `-f` Argument Collision
 * **Error**: `colab_kernel_launcher.py: error: unrecognized arguments: -f /root/.local/share/jupyter/runtime/kernel-xxx.json`
 * **Root Cause**: When running directly inside a Jupyter/Colab notebook cell (`%run inference.py` or `main()`), IPython injects its kernel configuration argument `-f` into `sys.argv`. `argparse.parse_args()` strictly rejects unknown options and raises `SystemExit: 2`.
 * **Fix**: Switched from `parser.parse_args()` to `parser.parse_known_args()`.
@@ -76,10 +122,10 @@ pipeline.stop_server()
 
 ---
 
-## Verification & Metrics on Tesla T4
+## File Structure
 
-Tested on live Google Colab VM via Colab Studio API:
-* **VRAM**: 8,508 MiB / 15,360 MiB (all 99 layers offloaded)
-* **Time to First Token**: ~24s (prefill + KV initialization)
-* **Decode Throughput**: ~9.3 tokens/second
-* **Output Streaming**: Clean separation of `[Thinking]` reasoning tokens and `[Answer]` tokens.
+* `inference.py`: Core inference pipeline with server lifecycle management, streaming reasoning/answer token separation, and vision support.
+* `benchmark.py`: Local and notebook benchmark runner measuring TTFT, Decode TPS, and VRAM utilization.
+* `run_colab_benchmark.py`: Automated Colab Studio integration runner with dynamic session creation and guaranteed session/assignment release in `finally`.
+* `README.md`: Setup, hardware sizing, benchmark metrics, and debugging log.
+* `.gitignore`: Standard Python and checkpoint ignore rules.
