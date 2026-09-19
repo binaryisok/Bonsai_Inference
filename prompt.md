@@ -1,0 +1,1 @@
+https://huggingface.co/prism-ml/Ternary-Bonsai-2-27B-gguf look at content of this and https://prismml.com/news/bonsai-2-27b page  and this as well  https://github.com/PrismML-Eng/Bonsai-demo/ , fetch all and tell me can the model run on this pc? 
