@@ -56,7 +56,7 @@ def run_diarization_transformers(audio_path: str, model_id: str = "nvidia/Nemotr
     
     model = AutoModelForAudioFrameClassification.from_pretrained(
         model_id,
-        torch_dtype=dtype,
+        dtype=dtype,
         device_map=device
     )
     model.eval()

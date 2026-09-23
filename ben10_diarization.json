@@ -1,0 +1,196 @@
+{
+  "model": "nvidia/Nemotron-3-Diarization",
+  "audio_file": "/content/ben10.mp3",
+  "duration_seconds": 268.4459375,
+  "inference_time_seconds": 2.2915272960000266,
+  "total_segments": 36,
+  "unique_speakers": 4,
+  "speaker_durations": {
+    "speaker_0": 1.819999999999986,
+    "speaker_1": 26.040000000000013,
+    "speaker_2": 15.779999999999998,
+    "speaker_3": 13.829999999999984
+  },
+  "segments": [
+    {
+      "Start": 16.62,
+      "End": 18.19,
+      "Speaker": 0
+    },
+    {
+      "Start": 18.7,
+      "End": 20.84,
+      "Speaker": 1
+    },
+    {
+      "Start": 20.86,
+      "End": 22.26,
+      "Speaker": 1
+    },
+    {
+      "Start": 22.64,
+      "End": 24.26,
+      "Speaker": 2
+    },
+    {
+      "Start": 24.64,
+      "End": 28.23,
+      "Speaker": 1
+    },
+    {
+      "Start": 45.46,
+      "End": 48.33,
+      "Speaker": 1
+    },
+    {
+      "Start": 49.56,
+      "End": 52.72,
+      "Speaker": 2
+    },
+    {
+      "Start": 53.12,
+      "End": 55.73,
+      "Speaker": 1
+    },
+    {
+      "Start": 57.01,
+      "End": 60.84,
+      "Speaker": 1
+    },
+    {
+      "Start": 66.58,
+      "End": 67.86,
+      "Speaker": 1
+    },
+    {
+      "Start": 68.43,
+      "End": 69.14,
+      "Speaker": 2
+    },
+    {
+      "Start": 69.55,
+      "End": 71.08,
+      "Speaker": 1
+    },
+    {
+      "Start": 71.39,
+      "End": 73.92,
+      "Speaker": 2
+    },
+    {
+      "Start": 74.43,
+      "End": 74.55,
+      "Speaker": 0
+    },
+    {
+      "Start": 74.56,
+      "End": 74.61,
+      "Speaker": 0
+    },
+    {
+      "Start": 74.64,
+      "End": 74.66,
+      "Speaker": 0
+    },
+    {
+      "Start": 74.68,
+      "End": 74.69,
+      "Speaker": 0
+    },
+    {
+      "Start": 74.72,
+      "End": 74.73,
+      "Speaker": 0
+    },
+    {
+      "Start": 74.88,
+      "End": 74.92,
+      "Speaker": 0
+    },
+    {
+      "Start": 81.7,
+      "End": 82.38,
+      "Speaker": 1
+    },
+    {
+      "Start": 82.76,
+      "End": 84.91,
+      "Speaker": 2
+    },
+    {
+      "Start": 92.86,
+      "End": 94.8,
+      "Speaker": 1
+    },
+    {
+      "Start": 122.94,
+      "End": 123.72,
+      "Speaker": 1
+    },
+    {
+      "Start": 169.55,
+      "End": 171.84,
+      "Speaker": 1
+    },
+    {
+      "Start": 189.44,
+      "End": 190.21,
+      "Speaker": 2
+    },
+    {
+      "Start": 202.99,
+      "End": 204.44,
+      "Speaker": 2
+    },
+    {
+      "Start": 204.94,
+      "End": 205.87,
+      "Speaker": 3
+    },
+    {
+      "Start": 206.89,
+      "End": 207.99,
+      "Speaker": 1
+    },
+    {
+      "Start": 210.02,
+      "End": 213.19,
+      "Speaker": 3
+    },
+    {
+      "Start": 213.32,
+      "End": 214.92,
+      "Speaker": 2
+    },
+    {
+      "Start": 226.34,
+      "End": 228.33,
+      "Speaker": 3
+    },
+    {
+      "Start": 232.95,
+      "End": 238.01,
+      "Speaker": 3
+    },
+    {
+      "Start": 238.62,
+      "End": 239.74,
+      "Speaker": 2
+    },
+    {
+      "Start": 250.36,
+      "End": 251.46,
+      "Speaker": 3
+    },
+    {
+      "Start": 256.0,
+      "End": 256.67,
+      "Speaker": 2
+    },
+    {
+      "Start": 266.73,
+      "End": 268.31,
+      "Speaker": 3
+    }
+  ]
+}
